@@ -1,23 +1,10 @@
 "use strict";
 
 (function () {
-  var PinSize = {
-    WIDTH: 31,
-    HEIGHT: 75
-  };
-
   var TitleValidity = {
     MINLENGHT: 30,
     MAXLENGTH: 100
   }
-
-  var MAP_PIN_MAIN = document.querySelector(".map__pin--main");
-  var FORM = document.querySelector(".ad-form");
-  var FORM_ADDRESS = FORM.querySelector("#address");
-  var ADRESS_COORDINATES_LEFT = Number.parseInt(MAP_PIN_MAIN.style.left);
-  var ADRESS_COORDINATES_TOP = Number.parseInt(MAP_PIN_MAIN.style.top);
-  FORM_ADDRESS.value = (ADRESS_COORDINATES_LEFT + PinSize.WIDTH) + ", " + (ADRESS_COORDINATES_TOP + PinSize.HEIGHT);
-
   var TITLE_INPUT = document.querySelector("#title");
 
   TITLE_INPUT.addEventListener("invalid", function () {
@@ -46,10 +33,6 @@
   var ROOM_NUMBER = document.querySelector("#room_number");
   var CAPACITY = document.querySelector("#capacity");
   var CAPACITY_VALUES = CAPACITY.children;
-
-  console.log(CAPACITY_VALUES);
-
-  console.log(CAPACITY_VALUES[0].value);
 
   var Types = {
     BUNGALO: {

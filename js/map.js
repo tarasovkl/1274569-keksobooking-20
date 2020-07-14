@@ -1,5 +1,6 @@
 "use strict";
 (function () {
+  var CARDS = window.card.allCards;
   var ALLDATA = window.pin.data;
   var template = document.querySelector('#pin').content;
   var templateButton = document.querySelector('#pin').content.querySelector('button');
@@ -14,19 +15,35 @@
   var MAP = document.querySelector('.map');
   var HEADER_INPUT = document.querySelector(".ad-form-header__input");
   HEADER_INPUT.disabled = true;
+
+
+
+
   /**
    * Создает метки на карте
    * @param  {array} pinsData
    */
-  var createPin = function (pinsData) {
-    for (var i = 0; i < pinsData.length; i++) {
-      TEMPLATE_IMG.alt = pinsData[i].offer.title;
-      TEMPLATE_IMG.src = pinsData[i].author.avatar;
+  var createPins = function (pinsData) {
+    var fragment = document.createDocumentFragment();
+
+    pinsData.forEach(function (item) {
+      TEMPLATE_IMG.alt = item.offer.title;
+      TEMPLATE_IMG.src = item.author.avatar;
       var button = templateButton.cloneNode(true);
-      button.style = "left: " + pinsData[i].location.x + "px;" + "top:" + pinsData[i].location.y + "px;";
-      MAP_PINS.appendChild(button);
-    }
+      button.style = "left: " + item.location.x + "px;" + "top:" + item.location.y + "px;";
+      fragment.appendChild(button);
+    });
+
+    MAP_PINS.appendChild(fragment);
   };
+
+
+
+  var onError = function (message) {
+    console.error(message);
+  };
+
+
   /**
    * Переводит страницу в неактивное состояние
    */
@@ -56,8 +73,14 @@
     MAP_FORM.forEach(function (item) {
       item.disabled = false;
     });
-    createPin(ALLDATA);
+    window.load.data(createPins, onError);
+    window.load.data(window.card.createData, onError);
   };
+
+
+
+
+
 
   var onMapPinClick = function (evt) {
     if (evt.button === 0) {
@@ -73,6 +96,6 @@
     }
   });
   window.map = {
-    mappinclick: onMapPinClick
+    pinClick: onMapPinClick,
   };
 })();

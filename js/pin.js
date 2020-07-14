@@ -62,6 +62,7 @@
    * Создаёт массив объектов с данными
    * @param  {number} count
    */
+
   var createPinData = function (count) {
     var PinDataArray = [];
     for (var i = 0; i < count; i++) {
@@ -92,7 +93,6 @@
   };
 
   var allData = createPinData(8);
-  console.log(allData);
 
   window.pin = {
     data: allData

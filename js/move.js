@@ -1,8 +1,15 @@
 "use strict";
 
 (function () {
-  var MAP_PIN_CLICK = window.map.mappinclick;
+  var MAP_PIN_CLICK = window.map.pinClick;
   var MAP_PIN_MAIN = document.querySelector(".map__pin--main");
+  var FORM = document.querySelector(".ad-form");
+  var FORM_ADDRESS = FORM.querySelector("#address");
+  var PinSize = {
+    WIDTH: 31,
+    HEIGHT: 75
+  };
+
   MAP_PIN_MAIN.addEventListener("mousedown", function (evt) {
     evt.preventDefault();
     var startCoords = {
@@ -26,6 +33,9 @@
 
       MAP_PIN_MAIN.style.top = (MAP_PIN_MAIN.offsetTop - shift.y) + "px";
       MAP_PIN_MAIN.style.left = (MAP_PIN_MAIN.offsetLeft - shift.x) + "px";
+      var ADRESS_COORDINATES_LEFT = Number.parseInt(MAP_PIN_MAIN.style.left);
+      var ADRESS_COORDINATES_TOP = Number.parseInt(MAP_PIN_MAIN.style.top);
+      FORM_ADDRESS.value = (ADRESS_COORDINATES_LEFT + PinSize.WIDTH) + ", " + (ADRESS_COORDINATES_TOP + PinSize.HEIGHT);
     };
 
     var onMouseUp = function (upEvt) {
