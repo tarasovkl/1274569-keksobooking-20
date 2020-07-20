@@ -41,14 +41,14 @@
     return arr;
   }
 
-  var Pin_Coordinate = {
+  var PinCoordinate = {
     X_MIN: 0,
     X_MAX: 1200,
     Y_MIN: 130,
     Y_MAX: 600
   };
 
-  var Offer_Value = {
+  var OfferValue = {
     PRICE_MIN: 0,
     PRICE_MAX: 10000,
     ROOMS_MIN: 1,
@@ -73,10 +73,10 @@
         offer: {
           title: "Заголовок",
           address: "{location.x}, {location.y}",
-          price: getRandomNumber(Offer_Value.PRICE_MIN, Offer_Value.PRICE_MAX),
+          price: getRandomNumber(OfferValue.PRICE_MIN, OfferValue.PRICE_MAX),
           type: getRandom(OFFER_TYPE),
-          rooms: getRandomNumber(Offer_Value.ROOMS_MIN, Offer_Value.ROOMS_MAX),
-          guests: getRandomNumber(Offer_Value.GUESTS_MIN, Offer_Value.GUESTS_MAX),
+          rooms: getRandomNumber(OfferValue.ROOMS_MIN, OfferValue.ROOMS_MAX),
+          guests: getRandomNumber(OfferValue.GUESTS_MIN, OfferValue.GUESTS_MAX),
           checkin: getRandom(OFFER_CHECKIN),
           checkout: getRandom(OFFER_CHECKIN),
           features: shuffleArray(OFFER_FEATURES).splice(0, getRandomNumber(0, OFFER_FEATURES.length)),
@@ -84,8 +84,8 @@
           photos: shuffleArray(OFFER_PHOTOS).slice(0, getRandomNumber(0, OFFER_PHOTOS.length)),
         },
         location: {
-          x: getRandomNumber(Pin_Coordinate.X_MIN, Pin_Coordinate.X_MAX),
-          y: getRandomNumber(Pin_Coordinate.Y_MIN, Pin_Coordinate.Y_MAX)
+          x: getRandomNumber(PinCoordinate.X_MIN, PinCoordinate.X_MAX),
+          y: getRandomNumber(PinCoordinate.Y_MIN, PinCoordinate.Y_MAX)
         }
       }
     }

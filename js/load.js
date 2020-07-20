@@ -5,8 +5,8 @@
   var TIMEOUT_IN_MS = 10000;
 
   /**Загружает данные для меток на карте
-   * @param  {} onSuccess
-   * @param  {} onError
+   * @param  {Function} onSuccess
+   * @param  {Function} onError
    */
   var getPinData = function (onSuccess, onError) {
     var xhr = new XMLHttpRequest();

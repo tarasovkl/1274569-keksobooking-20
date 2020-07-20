@@ -1,29 +1,8 @@
 "use strict";
 
 (function () {
-  var ALLDATA = window.pin.data;
   var MAP = document.querySelector('.map');
   var MAP_FILTERS = document.querySelector(".map__filters-container");
-  var TEMPLATE_CARD = document.querySelector("#card").content;
-  var CARD = TEMPLATE_CARD.cloneNode(true);
-  var POPUP = CARD.querySelector('.map__card');
-  var POPUP_TITLE = CARD.querySelector(".popup__title");
-  var POPUP_ADRESS = CARD.querySelector(".popup__text--address");
-  var POPUP_PRICE = CARD.querySelector(".popup__text--price");
-  var POPUP_TYPE = CARD.querySelector(".popup__type");
-  var POPUP_ROOMGUESTS = CARD.querySelector(".popup__text--capacity");
-  var POPUP_CHECKIN = CARD.querySelector(".popup__text--time");
-  var POPUP_DESCRIPTION = CARD.querySelector(".popup__description");
-  var POPUP_PHOTOS = CARD.querySelector(".popup__photos");
-  var POPUP_AVATAR = CARD.querySelector(".popup__avatar");
-  var POPUP_PHOTO = POPUP_PHOTOS.querySelector(".popup__photo");
-  var POPUP_CLOSE = CARD.querySelector('.popup__close');
-  var FEATURE_WIFI = CARD.querySelector(".popup__feature--wifi");
-  var FEATURE_DISHWASHER = CARD.querySelector(".popup__feature--dishwasher");
-  var FEATURE_PARKING = CARD.querySelector(".popup__feature--parking");
-  var FEATURE_WASHER = CARD.querySelector(".popup__feature--washer");
-  var FEATURE_ELEVATOR = CARD.querySelector(".popup__feature--elevator");
-  var FEATURE_CONDITIONER = CARD.querySelector(".popup__feature--conditioner");
   console.log()
 
   var Type = {
@@ -33,84 +12,107 @@
     PALACE: "Дворец"
   };
 
-  var FRAGMENT = document.createDocumentFragment();
-  var createPinsData = function (pinsData) {
+  /**
+   * Создает карточку объявления
+   * @param  {object} card
+   */
+  var createCardElement = function (cardData) {
+    var temlateCard = document.querySelector("#card").content;
+    var card = temlateCard.cloneNode(true);
+    var popupTitle = card.querySelector(".popup__title");
+    var popupAdress = card.querySelector(".popup__text--address");
+    var popupPrice = card.querySelector(".popup__text--price");
+    var popupType = card.querySelector(".popup__type");
+    var popupRoomGuests = card.querySelector(".popup__text--capacity");
+    var popupCheckIn = card.querySelector(".popup__text--time");
+    var popupDescription = card.querySelector(".popup__description");
+    var popupPhotos = card.querySelector(".popup__photos");
+    var popupAvatar = card.querySelector(".popup__avatar");
+    var popupPhoto = popupPhotos.querySelector(".popup__photo");
+    var popupClose = card.querySelector('.popup__close');
+    var featureWifi = card.querySelector(".popup__feature--wifi");
+    var featureDishwasher = card.querySelector(".popup__feature--dishwasher");
+    var featureParking = card.querySelector(".popup__feature--parking");
+    var featureWasher = card.querySelector(".popup__feature--washer");
+    var featureElevator = card.querySelector(".popup__feature--elevator");
+    var featureConditioner = card.querySelector(".popup__feature--conditioner");
+    popupTitle.textContent = cardData.offer.title;
+    popupAdress.textContent = cardData.offer.address;
+    popupPrice.textContent = cardData.offer.price + "₽/ночь";
+    popupRoomGuests.textContent = cardData.offer.rooms + " комнаты для " + cardData.offer.guests + " гостей";
+    popupCheckIn.textContent = "Заезд после " + cardData.offer.checkin + ", выезд до " + cardData.offer.checkout;
+    popupDescription.textContent = cardData.offer.description;
+    popupAvatar.src = cardData.author.avatar;
 
-    pinsData.forEach(function (item) {
-      POPUP_TITLE.textContent = item.offer.title;
-      POPUP_ADRESS.textContent = item.offer.address;
-      POPUP_PRICE.textContent = item.offer.price + "₽/ночь";
-      POPUP_ROOMGUESTS.textContent = item.offer.rooms + " комнаты для " + item.offer.guests + " гостей";
-      POPUP_CHECKIN.textContent = "Заезд после " + item.offer.checkin + ", выезд до " + item.offer.checkout;
-      POPUP_DESCRIPTION.textContent = item.offer.description;
-      POPUP_AVATAR.src = item.author.avatar;
-      if (item.offer.photos.length > 1) {
-        POPUP_PHOTO.src = item.offer.photos[0];
-        for (var i = 1; i > item.offer.photos.length; i++) {
-          var NEW_IMG = POPUP_PHOTO.cloneNode();
-          NEW_IMG.src = item.offer.photos[i];
-          POPUP_PHOTOS.appendChild(NEW_IMG);
-        }
-      } else {
-        POPUP_PHOTO.src = item.offer.photos;
-      };
-
-      if (item.offer.photos.length === 0) {
-        POPUP_PHOTO.remove();
+    if (cardData.offer.photos.length > 1) {
+      popupPhoto.src = cardData.offer.photos[0];
+      for (var i = 1; i > cardData.offer.photos.length; i++) {
+        var newImg = popupPhoto.cloneNode();
+        newImg.src = cardData.offer.photos[i];
+        popupPhotos.appendChild(newImg);
       }
+    } else {
+      popupPhoto.src = cardData.offer.photos;
+    };
 
+    if (cardData.offer.photos.length === 0) {
+      popupPhoto.remove();
+    }
 
-      POPUP_TYPE.textContent = Type[item.offer.type.toUpperCase()];
+    popupType.textContent = Type[cardData.offer.type.toUpperCase()];
 
-      if (!item.offer.features.includes("wifi")) {
-        FEATURE_WIFI.remove();
-      };
+    if (!cardData.offer.features.includes("wifi")) {
+      featureWifi.remove();
+    };
 
-      if (!item.offer.features.includes("dishwasher")) {
-        FEATURE_DISHWASHER.remove();
-      };
+    if (!cardData.offer.features.includes("dishwasher")) {
+      featureDishwasher.remove();
+    };
 
-      if (!item.offer.features.includes("parking")) {
-        FEATURE_PARKING.remove();
-      };
+    if (!cardData.offer.features.includes("parking")) {
+      featureParking.remove();
+    };
 
-      if (!item.offer.features.includes("washer")) {
-        FEATURE_WASHER.remove();
-      };
+    if (!cardData.offer.features.includes("washer")) {
+      featureWasher.remove();
+    };
 
-      if (!item.offer.features.includes("elevator")) {
-        FEATURE_ELEVATOR.remove();
-      };
+    if (!cardData.offer.features.includes("elevator")) {
+      featureElevator.remove();
+    };
 
-      if (!item.offer.features.includes("conditioner")) {
-        FEATURE_CONDITIONER.remove();
-      };
-      var POPUP = CARD.cloneNode(true);
-      FRAGMENT.appendChild(POPUP);
+    if (!cardData.offer.features.includes("conditioner")) {
+      featureConditioner.remove();
+    };
 
-
+    popupClose.addEventListener('click', function (evt) {
+      if (evt.button === 0) {
+        var mapCard = document.querySelector('.map__card');
+        mapCard.remove();
+      }
     });
+
+    document.addEventListener('keydown', function (evt) {
+      if (evt.key === 'Escape') {
+        removeCardElement();
+      }
+    });
+
+    MAP.insertBefore(card, MAP_FILTERS);
   };
-  var CARDS = FRAGMENT.children;
 
-  POPUP_CLOSE.addEventListener('click', function (evt) {
-    if (evt.button === 0) {
-      var MAP_CARD = document.querySelector('.map__card');
-      MAP_CARD.remove();
+  /**
+   * Удаляет карточку объявления
+   */
+  var removeCardElement = function () {
+    var mapCard = document.querySelector('.map__card');
+    if (mapCard) {
+      mapCard.remove();
     }
-  });
-
-  POPUP_CLOSE.addEventListener('click', function (evt) {
-    if (evt.key === 'enter') {
-      var MAP_CARD = document.querySelector('.map__card');
-      MAP_CARD.remove();
-    }
-  });
-
+  };
 
   window.card = {
-    popup: CARD,
-    allCards: CARDS,
-    createData: createPinsData
-  }
+    create: createCardElement,
+    delete: removeCardElement
+  };
 })();

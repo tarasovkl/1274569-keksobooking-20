@@ -9,6 +9,12 @@
     WIDTH: 31,
     HEIGHT: 75
   };
+  var MapSize = {
+    MAX_X: 1200 - PinSize.WIDTH * 2,
+    MIN_X: 0,
+    MAX_Y: 620,
+    MIN_Y: 130
+  };
 
   MAP_PIN_MAIN.addEventListener("mousedown", function (evt) {
     evt.preventDefault();
@@ -31,11 +37,16 @@
         y: moveEvt.clientY
       };
 
+      var newXCoords = MAP_PIN_MAIN.offsetLeft - shift.x;
+      var newYCoords = MAP_PIN_MAIN.offsetTop - shift.y
+
+      if (newYCoords < MapSize.MAX_Y && newYCoords > MapSize.MIN_Y &&  newXCoords < MapSize.MAX_X && newXCoords > MapSize.MIN_X) {
       MAP_PIN_MAIN.style.top = (MAP_PIN_MAIN.offsetTop - shift.y) + "px";
       MAP_PIN_MAIN.style.left = (MAP_PIN_MAIN.offsetLeft - shift.x) + "px";
       var ADRESS_COORDINATES_LEFT = Number.parseInt(MAP_PIN_MAIN.style.left);
       var ADRESS_COORDINATES_TOP = Number.parseInt(MAP_PIN_MAIN.style.top);
       FORM_ADDRESS.value = (ADRESS_COORDINATES_LEFT + PinSize.WIDTH) + ", " + (ADRESS_COORDINATES_TOP + PinSize.HEIGHT);
+      }
     };
 
     var onMouseUp = function (upEvt) {
