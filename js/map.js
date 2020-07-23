@@ -10,9 +10,15 @@
   var MAP_PINS = document.querySelector('.map__pins');
   var MAP = document.querySelector('.map');
   var HEADER_INPUT = document.querySelector(".ad-form-header__input");
+  var RENDER_PIN_COUNT = 5;
   var templateImg = document.querySelector('#pin').content.querySelector('img');
 
   HEADER_INPUT.disabled = true;
+
+  var PinSize = {
+    WIDTH: 25,
+    HEIGHT: 70
+  };
 
   /**
    * Создает метки на карте
@@ -20,12 +26,11 @@
    */
   var createPins = function (pinsData) {
     var fragment = document.createDocumentFragment();
-
     pinsData.forEach(function (pin) {
       templateImg.alt = pin.offer.title;
       templateImg.src = pin.author.avatar;
       var button = TEMPLATE_BUTTON.cloneNode(true);
-      button.style = "left: " + pin.location.x + "px;" + "top:" + pin.location.y + "px;";
+      button.style = "left: " + (pin.location.x - PinSize.WIDTH) + "px;" + "top:" + (pin.location.y - PinSize.HEIGHT) + "px;";
       button.addEventListener('click', function(evt) {
         if (evt.button === 0) {
           window.card.delete();
@@ -36,7 +41,6 @@
       });
 
     MAP_PINS.appendChild(fragment);
-
   };
 
 
@@ -83,6 +87,8 @@
       input.disabled = false;
     });
     window.load.data(window.filters.onSuccess, onError);
+    window.move.newPinCoords();
+    MAP_PIN_MAIN.removeEventListener("click", onMapPinClick);
   };
 
 
@@ -95,9 +101,8 @@
       enableActive();
     };
   };
-
+  
   MAP_PIN_MAIN.addEventListener("click", onMapPinClick);
-
 
   MAP_PIN_MAIN.addEventListener("keydown", function (evt) {
     if (evt.key === "Enter") {
@@ -116,7 +121,6 @@
       });
     };
   };
-
 
   window.map = {
     pinClick: onMapPinClick,

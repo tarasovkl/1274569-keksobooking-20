@@ -44,16 +44,13 @@
     popupDescription.textContent = cardData.offer.description;
     popupAvatar.src = cardData.author.avatar;
 
-    if (cardData.offer.photos.length > 1) {
-      popupPhoto.src = cardData.offer.photos[0];
-      for (var i = 1; i > cardData.offer.photos.length; i++) {
-        var newImg = popupPhoto.cloneNode();
-        newImg.src = cardData.offer.photos[i];
-        popupPhotos.appendChild(newImg);
-      }
-    } else {
-      popupPhoto.src = cardData.offer.photos;
-    };
+
+    cardData.offer.photos.forEach(function (card) {
+      popupPhoto.remove();
+      var newImg = popupPhoto.cloneNode();
+      newImg.src = card;
+      popupPhotos.appendChild(newImg);
+    });
 
     if (cardData.offer.photos.length === 0) {
       popupPhoto.remove();

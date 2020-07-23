@@ -4,14 +4,15 @@
 
   var MAIN = document.querySelector('main');
   var FORM = document.querySelector('.ad-form');
+  var TITLE_INPUT = document.querySelector("#title");
   var PLACE_TYPE = document.querySelector("#type");
   var PLACE_PRICE = document.querySelector("#price");
   var TIMEIN = document.querySelector("#timein");
   var TIMEOUT = document.querySelector("#timeout");
   var ROOM_NUMBER = document.querySelector("#room_number");
   var CAPACITY = document.querySelector("#capacity");
-  var CAPACITY_VALUES = CAPACITY.children;
   var RESET = document.querySelector('.ad-form__reset');
+  var MAP_PIN_MAIN = document.querySelector(".map__pin--main");
 
   var TitleValidity = {
     MINLENGHT: 30,
@@ -43,7 +44,8 @@
 
   var defaultValues = {
     MAX_PRICE: 1000000,
-    MIN_PRICE: 0
+    MIN_PRICE: 0,
+    CAPACITY: 1
   };
 
   var roomsForGuests = {
@@ -52,8 +54,6 @@
     '3': ['1', '2', '3'],
     '100': ['100']
   };
-
-  var TITLE_INPUT = document.querySelector("#title");
 
   TITLE_INPUT.addEventListener("invalid", function () {
     if (TITLE_INPUT.validity.valueMissing) {
@@ -72,7 +72,6 @@
       TITLE_INPUT.setCustomValidity('Удалите лишние ' + (TITLE_INPUT_LENGTH - TitleValidity.MAXLENGTH) + ' симв.')
     } else TITLE_INPUT.setCustomValidity('');
   });
-
 
   PLACE_PRICE.placeholder = Types.FLAT.price;
   PLACE_PRICE.max = defaultValues.MAX_PRICE;
@@ -93,14 +92,6 @@
     TIMEIN.value = TIMEOUT.value;
   });
 
-  /* var Values = {
-    ONE_ROOM: "1",
-    TWO_ROOMS: "2",
-    THREE_ROOMS: "3",
-    ONE_H_ROOMS: "100",
-    ZERO: "0"
-  }; */
-
   CAPACITY.value = roomsForGuests[1];
 
   ROOM_NUMBER.addEventListener('change', function () {
@@ -120,44 +111,7 @@
       ROOM_NUMBER.setCustomValidity('');
     }
   });
-
-  /*  CAPACITY.value = Values.ONE_ROOM;
-   CAPACITY_VALUES[0].disabled = true;
-   CAPACITY_VALUES[1].disabled = true;
-   CAPACITY_VALUES[2].disabled = false;
-   CAPACITY_VALUES[3].disabled = true;
-
-   ROOM_NUMBER.addEventListener("change", function () {
-     if (this.value === Values.TWO_ROOMS) {
-       CAPACITY.value = Values.TWO_ROOMS;
-       CAPACITY_VALUES[0].disabled = true;
-       CAPACITY_VALUES[1].disabled = false;
-       CAPACITY_VALUES[2].disabled = false;
-       CAPACITY_VALUES[3].disabled = true;
-     };
-     if (this.value === Values.ONE_ROOM) {
-       CAPACITY.value = Values.ONE_ROOM;
-       CAPACITY_VALUES[0].disabled = true;
-       CAPACITY_VALUES[1].disabled = true;
-       CAPACITY_VALUES[2].disabled = false;
-       CAPACITY_VALUES[3].disabled = true;
-     };
-     if (this.value === Values.THREE_ROOMS) {
-       CAPACITY.value = Values.THREE_ROOMS;
-       CAPACITY_VALUES[0].disabled = false;
-       CAPACITY_VALUES[1].disabled = false;
-       CAPACITY_VALUES[2].disabled = false;
-       CAPACITY_VALUES[3].disabled = true;
-     };
-     if (this.value === Values.ONE_H_ROOMS) {
-       CAPACITY.value = Values.ZERO;
-       CAPACITY_VALUES[0].disabled = true;
-       CAPACITY_VALUES[1].disabled = true;
-       CAPACITY_VALUES[2].disabled = true;
-       CAPACITY_VALUES[3].disabled = false;
-     };
-   }); */
-
+  
   /**
    * Добавляет сообщение об отправке формы
    */
@@ -165,6 +119,20 @@
     var template = document.querySelector('#success').content;
     var templateElement = template.cloneNode(true);
     MAIN.appendChild(templateElement);
+
+    var successPopup = document.querySelector('.success');
+
+    document.addEventListener('click', function (evt) {
+      if (evt.button === 0) {
+        successPopup.remove();
+      };
+    });
+
+    document.addEventListener('keydown', function (evt) {
+      if (evt.key === 'Escape') {
+        successPopup.remove();
+      }
+    });
   };
 
   /**
@@ -174,24 +142,56 @@
     var templateError = document.querySelector('#error').content;
     var error = templateError.cloneNode(true);
     MAIN.appendChild(error);
+
+    var errorPopup = document.querySelector('.error');
+    var errorButton = errorPopup.querySelector('.error__button');
+
+    document.addEventListener('click', function (evt) {
+      if (evt.button === 0) {
+        errorPopup.remove();
+      }
+    });
+    document.addEventListener('keydown', function (evt) {
+      if (evt.key === 'Escape') {
+        errorPopup.remove();
+      }
+    });
+    errorButton.addEventListener('click', function (evt) {
+      evt.preventDefault();
+      if (evt.button === 0) {
+        errorPopup.remove();
+      }
+    });
   };
 
   FORM.addEventListener('submit', function (evt) {
     evt.preventDefault();
     window.upload.send(new FormData(FORM), function () {
-      window.map.disable();
       showPopupOnSuccess();
+      window.map.disable();
+      window.card.delete();
+      window.map.delete();
+      clearForm();
     }, showPopupOnError);
   });
 
- 
   RESET.addEventListener('click', function (evt) {
     if (evt.button === 0) {
       window.map.disable();
       window.card.delete();
       window.map.delete();
       clearForm();
+      window.move.resetPin();
+      window.move.resetPinCoords();
+      MAP_PIN_MAIN.addEventListener("click", window.map.pinClick);
     }
-
   });
+  /**
+   * Сбрасывает значения формы
+   */
+  var clearForm = function() {
+    FORM.reset();
+    CAPACITY.value = defaultValues.CAPACITY;
+    window.move.resetPin();
+  };
 })();
