@@ -1,10 +1,9 @@
 'use strict';
 (function () {
   var URL = 'https://javascript.pages.academy/keksobooking/data';
-
   var TIMEOUT_IN_MS = 10000;
-
-  /**Загружает данные для меток на карте
+  /**
+   * Загружает данные для меток на карте
    * @param  {Function} onSuccess
    * @param  {Function} onError
    */
@@ -34,5 +33,5 @@
   };
   window.load = {
     data: getPinData
-  }
+  };
 })();

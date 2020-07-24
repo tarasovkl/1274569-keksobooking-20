@@ -1,3 +1,5 @@
+'use strict';
+
 (function () {
   var URL = 'https://javascript.pages.academy/keksobooking';
   /**
