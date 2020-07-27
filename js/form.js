@@ -172,6 +172,7 @@
       window.card.delete();
       window.map.delete();
       clearForm();
+      window.move.resetPinCoords();
       mapPinMain.addEventListener('mousedown', window.map.pinClick);
     }, showPopupOnError);
   });
