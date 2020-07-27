@@ -1,8 +1,8 @@
 'use strict';
 
 (function () {
-  var MAP = document.querySelector('.map');
-  var MAP_FILTERS = document.querySelector('.map__filters-container');
+  var map = document.querySelector('.map');
+  var mapFilters = document.querySelector('.map__filters-container');
 
   var Type = {
     BUNGALO: 'Бунгало',
@@ -93,7 +93,7 @@
       }
     });
 
-    MAP.insertBefore(card, MAP_FILTERS);
+    map.insertBefore(card, mapFilters);
   };
 
   /**

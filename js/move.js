@@ -1,9 +1,9 @@
 'use strict';
 
 (function () {
-  var MAP_PIN_MAIN = document.querySelector('.map__pin--main');
-  var FORM = document.querySelector('.ad-form');
-  var FORM_ADDRESS = FORM.querySelector('#address');
+  var mapPinMain = document.querySelector('.map__pin--main');
+  var form = document.querySelector('.ad-form');
+  var formAddress = form.querySelector('#address');
   var PinSize = {
     WIDTH: 62,
     HEIGHT: 75
@@ -24,17 +24,17 @@
   var defaultPinCoords = function () {
     var addressCoordsLeft = PinSizeDisabled.LEFT + (PinSizeDisabled.WIDTH / 2) + 'px';
     var addressCoordsTop = PinSizeDisabled.TOP + (PinSizeDisabled.HEIGHT / 2) + 'px';
-    FORM_ADDRESS.value = Number.parseInt(addressCoordsLeft, 10) + ', ' + Number.parseInt(addressCoordsTop, 10);
+    formAddress.value = Number.parseInt(addressCoordsLeft, 10) + ', ' + Number.parseInt(addressCoordsTop, 10);
   };
   defaultPinCoords();
 
   var newCoords = function () {
     var addressCoordsLeft = PinSizeDisabled.LEFT + (PinSizeDisabled.WIDTH / 2) + 'px';
     var addressCoordsTop = PinSizeDisabled.TOP + PinSize.HEIGHT + 'px';
-    FORM_ADDRESS.value = Number.parseInt(addressCoordsLeft, 10) + ', ' + Number.parseInt(addressCoordsTop, 10);
+    formAddress.value = Number.parseInt(addressCoordsLeft, 10) + ', ' + Number.parseInt(addressCoordsTop, 10);
   };
 
-  MAP_PIN_MAIN.addEventListener('mousedown', function (evt) {
+  mapPinMain.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
     var startCoords = {
       x: evt.clientX,
@@ -53,15 +53,15 @@
         y: moveEvt.clientY
       };
 
-      var newXCoords = MAP_PIN_MAIN.offsetLeft - shift.x;
-      var newYCoords = MAP_PIN_MAIN.offsetTop - shift.y;
+      var newXCoords = mapPinMain.offsetLeft - shift.x;
+      var newYCoords = mapPinMain.offsetTop - shift.y;
 
       if (newYCoords < MapSize.MAX_Y && newYCoords > MapSize.MIN_Y && newXCoords < MapSize.MAX_X && newXCoords > MapSize.MIN_X) {
-        MAP_PIN_MAIN.style.top = newYCoords + 'px';
-        MAP_PIN_MAIN.style.left = newXCoords + 'px';
-        var AddressCoordsLeft = Number.parseInt(MAP_PIN_MAIN.style.left, 10);
-        var AddressCoordsTop = Number.parseInt(MAP_PIN_MAIN.style.top, 10);
-        FORM_ADDRESS.value = (AddressCoordsLeft + PinSize.WIDTH / 2) + ', ' + (AddressCoordsTop + PinSize.HEIGHT);
+        mapPinMain.style.top = newYCoords + 'px';
+        mapPinMain.style.left = newXCoords + 'px';
+        var AddressCoordsLeft = Number.parseInt(mapPinMain.style.left, 10);
+        var AddressCoordsTop = Number.parseInt(mapPinMain.style.top, 10);
+        formAddress.value = (AddressCoordsLeft + PinSize.WIDTH / 2) + ', ' + (AddressCoordsTop + PinSize.HEIGHT);
       }
     };
 
@@ -78,7 +78,7 @@
    * Сбрасывает положение главной метки на карте
    */
   var resetMainPin = function () {
-    MAP_PIN_MAIN.style = 'left: ' + PinSizeDisabled.LEFT + 'px; ' + 'top: ' + PinSizeDisabled.TOP + 'px;';
+    mapPinMain.style = 'left: ' + PinSizeDisabled.LEFT + 'px; ' + 'top: ' + PinSizeDisabled.TOP + 'px;';
   };
   window.move = {
     resetPin: resetMainPin,
