@@ -13,6 +13,12 @@
     LOW: 10000,
     HIGH: 50000
   };
+  var FilterValue = {
+    ALL: 'any',
+    LOW: 'low',
+    MIDDLE: 'middle',
+    HIGH: 'high'
+  };
   /**
    * загрузка данных с сервера
    * @param  {Array} data - массив с данными
@@ -22,38 +28,38 @@
     window.map.render(data.slice(0, MAX_PIN_COUNT));
   };
 
-  filters.addEventListener('change', window.debounce.delay(function () {
+  filters.addEventListener('change', window.debounce(function () {
+    window.card.delete();
     updatePins();
   }));
-
 
   /**
    * фильтрация пинов
    */
   var updatePins = function () {
     var filteredPins = newPins.filter(function (pin) {
-      if (houseType.value === 'any') {
+      if (houseType.value === FilterValue.ALL) {
         var isType = true;
       } else {
         isType = houseType.value === pin.offer.type;
       }
-      if (houseRoom.value === 'any') {
+      if (houseRoom.value === FilterValue.ALL) {
         var isRoom = true;
       } else {
         isRoom = houseRoom.value === pin.offer.rooms.toString();
       }
-      if (houseGuest.value === 'any') {
+      if (houseGuest.value === FilterValue.ALL) {
         var isGuest = true;
       } else {
         isGuest = houseGuest.value === pin.offer.guests.toString();
       }
-      if (housePrice.value === 'any') {
+      if (housePrice.value === FilterValue.ALL) {
         var isPrice = true;
-      } else if (housePrice.value === 'low') {
+      } else if (housePrice.value === FilterValue.LOW) {
         isPrice = PriceValue.LOW > pin.offer.price;
-      } else if (housePrice.value === 'middle') {
+      } else if (housePrice.value === FilterValue.MIDDLE) {
         isPrice = PriceValue.LOW <= pin.offer.price && pin.offer.price <= PriceValue.HIGH;
-      } else if (housePrice.value === 'high') {
+      } else if (housePrice.value === FilterValue.HIGH) {
         isPrice = PriceValue.HIGH < pin.offer.price;
       }
 

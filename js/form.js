@@ -13,6 +13,7 @@
   var capacity = document.querySelector('#capacity');
   var reset = document.querySelector('.ad-form__reset');
   var mapPinMain = document.querySelector('.map__pin--main');
+  var mapFilters = document.querySelector('.map__filters');
 
   var TitleValidity = {
     MINLENGHT: 30,
@@ -44,7 +45,7 @@
 
   var defaultValues = {
     MAX_PRICE: 1000000,
-    MIN_PRICE: 0,
+    MIN_PRICE: 1000,
     CAPACITY: 1
   };
 
@@ -52,7 +53,7 @@
     '1': ['1'],
     '2': ['1', '2'],
     '3': ['1', '2', '3'],
-    '100': ['100']
+    '100': ['0']
   };
 
   titleInput.addEventListener('invalid', function () {
@@ -112,14 +113,14 @@
       roomNumber.setCustomValidity('');
     }
   });
+
+  var template = document.querySelector('#success').content;
   /**
    * Добавляет сообщение об отправке формы
    */
   var showPopupOnSuccess = function () {
-    var template = document.querySelector('#success').content;
     var templateElement = template.cloneNode(true);
     main.appendChild(templateElement);
-
     var successPopup = document.querySelector('.success');
 
     document.addEventListener('click', function (evt) {
@@ -135,14 +136,13 @@
     });
   };
 
+  var templateError = document.querySelector('#error').content;
   /**
    * Добавляет сообщение об ошибке отправки формы
    */
   var showPopupOnError = function () {
-    var templateError = document.querySelector('#error').content;
     var error = templateError.cloneNode(true);
     main.appendChild(error);
-
     var errorPopup = document.querySelector('.error');
     var errorButton = errorPopup.querySelector('.error__button');
 
@@ -166,13 +166,13 @@
 
   form.addEventListener('submit', function (evt) {
     evt.preventDefault();
-    window.upload.send(new FormData(form), function () {
+    window.load.upload(new FormData(form), function () {
       showPopupOnSuccess();
       window.map.disable();
       window.card.delete();
       window.map.delete();
       clearForm();
-      mapPinMain.addEventListener('click', window.map.pinClick);
+      mapPinMain.addEventListener('mousedown', window.map.pinClick);
     }, showPopupOnError);
   });
 
@@ -184,7 +184,7 @@
       clearForm();
       window.move.resetPin();
       window.move.resetPinCoords();
-      mapPinMain.addEventListener('click', window.map.pinClick);
+      mapPinMain.addEventListener('mousedown', window.map.pinClick);
     }
   });
   /**
@@ -192,6 +192,7 @@
    */
   var clearForm = function () {
     form.reset();
+    mapFilters.reset();
     capacity.value = defaultValues.CAPACITY;
     window.move.resetPin();
   };

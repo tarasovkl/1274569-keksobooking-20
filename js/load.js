@@ -1,19 +1,23 @@
 'use strict';
 (function () {
-  var URL = 'https://javascript.pages.academy/keksobooking/data';
+  var Url = {
+    LOAD: 'https://javascript.pages.academy/keksobooking/data',
+    UPLOAD: 'https://javascript.pages.academy/keksobooking'
+  };
   var TIMEOUT_IN_MS = 10000;
+  var SUCCESS_CODE = 200;
   /**
    * Загружает данные для меток на карте
+   * @param  {Object} xhr
    * @param  {Function} onSuccess
    * @param  {Function} onError
    */
-  var getPinData = function (onSuccess, onError) {
-    var xhr = new XMLHttpRequest();
+  var newXhr = function (xhr, onSuccess, onError) {
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
       switch (xhr.status) {
-        case 200:
+        case SUCCESS_CODE:
           onSuccess(xhr.response);
           break;
         default:
@@ -28,10 +32,24 @@
     });
 
     xhr.timeout = TIMEOUT_IN_MS;
-    xhr.open('GET', URL);
+  };
+
+  var load = function (onSuccess, onError) {
+    var xhr = new XMLHttpRequest();
+    newXhr(xhr, onSuccess, onError);
+    xhr.open('GET', Url.LOAD);
     xhr.send();
   };
+
+  var upload = function (data, onSuccess, onError) {
+    var xhr = new XMLHttpRequest();
+    newXhr(xhr, onSuccess, onError);
+    xhr.open('POST', Url.UPLOAD);
+    xhr.send(data);
+  };
+
   window.load = {
-    data: getPinData
+    download: load,
+    upload: upload
   };
 })();

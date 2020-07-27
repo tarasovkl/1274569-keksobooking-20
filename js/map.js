@@ -86,9 +86,9 @@
     mapFormInputs.forEach(function (input) {
       input.disabled = false;
     });
-    window.load.data(window.filters.onSuccess, onError);
+    window.load.download(window.filters.onSuccess, onError);
     window.move.newPinCoords();
-    mapPinMain.removeEventListener('click', onMapPinClick);
+    mapPinMain.removeEventListener('mousedown', onMapPinClick);
     mapPinMain.removeEventListener('keydown', onMapPinClick);
   };
   /**
@@ -100,7 +100,7 @@
       enableActive();
     }
   };
-  mapPinMain.addEventListener('click', onMapPinClick);
+  mapPinMain.addEventListener('mousedown', onMapPinClick);
 
   mapPinMain.addEventListener('keydown', function (evt) {
     if (evt.key === 'Enter') {
@@ -123,6 +123,7 @@
     pinClick: onMapPinClick,
     disable: disableActive,
     render: createPins,
-    delete: removePins
+    delete: removePins,
+    enable: enableActive
   };
 })();

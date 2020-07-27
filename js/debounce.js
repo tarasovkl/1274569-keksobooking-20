@@ -17,7 +17,5 @@
     };
   };
 
-  window.debounce = {
-    delay: debounce
-  };
+  window.debounce = debounce;
 })();

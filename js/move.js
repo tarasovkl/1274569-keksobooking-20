@@ -56,7 +56,7 @@
       var newXCoords = mapPinMain.offsetLeft - shift.x;
       var newYCoords = mapPinMain.offsetTop - shift.y;
 
-      if (newYCoords < MapSize.MAX_Y && newYCoords > MapSize.MIN_Y && newXCoords < MapSize.MAX_X && newXCoords > MapSize.MIN_X) {
+      if (newYCoords < MapSize.MAX_Y && newYCoords > MapSize.MIN_Y && newXCoords <= MapSize.MAX_X && newXCoords >= MapSize.MIN_X) {
         mapPinMain.style.top = newYCoords + 'px';
         mapPinMain.style.left = newXCoords + 'px';
         var AddressCoordsLeft = Number.parseInt(mapPinMain.style.left, 10);
@@ -83,7 +83,7 @@
   window.move = {
     resetPin: resetMainPin,
     resetPinCoords: defaultPinCoords,
-    newPinCoords: newCoords
+    newPinCoords: newCoords,
   };
 })();
 
